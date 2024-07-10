@@ -39,7 +39,7 @@ export const Chat = ({ character }: ChatProps) => {
             {messages.length === 0 && (
                 <div className='w-[calc(100%_-_2rem)] flex flex-wrap justify-center gap-2 absolute bottom-20 left-1/2 -translate-x-1/2'>
                     {character.defaultQuestions.map((question, index) => (
-                        <Button variant={'outline'} key={index} onClick={() => {
+                        <Button variant={'outline'} size={'lg'} key={index} onClick={() => {
                             handleInputChange({ target: { name: 'prompt', value: question } } as { target: (EventTarget & HTMLInputElement) })
                         }}>
                             {question}
