@@ -1,19 +1,22 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
-import { LoaderIcon, PauseIcon, PlayIcon } from "lucide-react"
+import { useEffect, useState } from "react"
+import { LoaderIcon, PlayIcon, StopCircleIcon } from "lucide-react"
 
 import { useAudioPlayer } from "@/hooks/use-audio-player"
 
 import { Button } from "./ui/button"
 
-export const MessageAudioPlayer = ({ content }: { content: string }) => {
-  const audioRef = useRef<HTMLAudioElement>(null)
+export const MessageAudioPlayer = ({
+  content,
+  character,
+}: {
+  content: string
+  character: string
+}) => {
+  const player = useAudioPlayer()
 
-  const [audioUrl, setAudioUrl] = useState<string | null>(null)
   const [generatingAudio, setGeneratingAudio] = useState(false)
-
-  const audioPlayer = useAudioPlayer(audioRef)
 
   const textToSpeech = async (text: string) => {
     try {
@@ -23,12 +26,9 @@ export const MessageAudioPlayer = ({ content }: { content: string }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify({ text, character }),
       })
-
-      const blob = await response.blob()
-      const url = URL.createObjectURL(blob)
-      setAudioUrl(url)
+      player.play(response.body as any)
     } catch (error) {
       console.error(error)
     } finally {
@@ -37,28 +37,23 @@ export const MessageAudioPlayer = ({ content }: { content: string }) => {
   }
 
   useEffect(() => {
-    if (audioUrl) {
-      audioPlayer.play()
+    return () => {
+      player.isPlaying && player.stop()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [audioUrl])
+  }, [player])
 
   return (
     <>
       <Button
         onClick={() => {
-          if (audioUrl) {
-            audioPlayer.isPlaying ? audioPlayer.pause() : audioPlayer.play()
-          } else {
-            textToSpeech(content)
-          }
+          player.isPlaying ? player.stop() : textToSpeech(content)
         }}
         size={"icon"}
         disabled={generatingAudio}
       >
         {!generatingAudio ? (
-          audioPlayer.isPlaying ? (
-            <PauseIcon size={16} />
+          player.isPlaying ? (
+            <StopCircleIcon size={16} />
           ) : (
             <PlayIcon size={16} />
           )
@@ -66,9 +61,6 @@ export const MessageAudioPlayer = ({ content }: { content: string }) => {
           <LoaderIcon size={16} className="animate-spin" />
         )}
       </Button>
-      {audioUrl && (
-        <audio ref={audioRef} src={audioUrl} controls className="hidden" />
-      )}
     </>
   )
 }
