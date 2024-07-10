@@ -67,7 +67,7 @@ export const ChatMessage = ({ role, content, character }: ChatMessageProps) => {
         })}>
             {content}
         </div>
-        {isAssistant && <Button onClick={() => textToSpeech(content)} disabled={generatingAudio}>
+        {isAssistant && <Button onClick={() => textToSpeech(content)} size={'icon'} disabled={generatingAudio}>
             {!generatingAudio ? <PlayIcon size={16} /> : <LoaderIcon size={16} className='animate-spin' />}
         </Button>}
         {audioUrl && <audio ref={audioRef} src={audioUrl} controls className='hidden' />}
