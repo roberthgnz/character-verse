@@ -37,7 +37,9 @@ export const ChatMessage = ({ role, content, character }: ChatMessageProps) => {
       >
         {content}
       </div>
-      {isAssistant && <MessageAudioPlayer content={content} />}
+      {isAssistant && (
+        <MessageAudioPlayer content={content} character={character.name} />
+      )}
     </div>
   )
 }

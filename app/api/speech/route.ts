@@ -1,23 +1,32 @@
-import OpenAI from "openai"
-
-const openai = new OpenAI()
-
-// Allow streaming responses up to 30 seconds
-export const maxDuration = 30
+import { characters } from "@/constants"
 
 export async function POST(req: Request) {
-  const { text }: { text: string } = await req.json()
+  const { text, character }: { text: string; character: string } =
+    await req.json()
 
-  const mp3 = await openai.audio.speech.create({
-    model: "tts-1",
-    voice: "alloy",
-    input: text,
-  })
+  const characterData = characters.find((c) => c.name === character)
 
-  return new Response(mp3.body, {
+  const voice = await fetch("https://api.cartesia.ai/tts/bytes", {
+    method: "POST",
     headers: {
-      "Content-Type": "audio/mpeg",
-      "Content-Disposition": "attachment; filename=speech.mp3",
+      "Cartesia-Version": "2024-06-30",
+      "Content-Type": "application/json",
+      "X-API-Key": process.env.CARTESIA_API_KEY!,
     },
+    body: JSON.stringify({
+      model_id: "sonic-english",
+      transcript: text,
+      voice: {
+        mode: "embedding",
+        embedding: characterData?.voiceEmbedding,
+      },
+      output_format: {
+        container: "raw",
+        encoding: "pcm_f32le",
+        sample_rate: 24000,
+      },
+    }),
   })
+
+  return new Response(voice.body)
 }
