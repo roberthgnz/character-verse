@@ -2,6 +2,7 @@ import { characters } from "@/constants"
 import type { Character } from "@/types"
 
 import { Chat } from "@/components/chat"
+import { ChatSettings } from "@/components/chat-settings"
 
 export default function Page({ params }: { params: { character: string } }) {
   const character = characters.find((c) => c.name === params.character) as
@@ -16,7 +17,9 @@ export default function Page({ params }: { params: { character: string } }) {
     <div className="bg-background flex h-screen flex-col">
       <div className="grid size-full grid-cols-[80%_auto] gap-4">
         <Chat character={character} />
-        <div className="h-full border-l"></div>
+        <div className="h-full border-l">
+          <ChatSettings character={character} />
+        </div>
       </div>
     </div>
   )

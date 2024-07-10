@@ -19,6 +19,13 @@ export const Chat = ({ character }: ChatProps) => {
       headers: {
         "X-Character": character.name,
       },
+      initialMessages: [
+        {
+          id: "assistant-0",
+          role: "assistant",
+          content: character.defaultMessage,
+        },
+      ],
     })
 
   return (
@@ -39,26 +46,6 @@ export const Chat = ({ character }: ChatProps) => {
           ))}
         </div>
       )}
-
-      {messages.length === 0 && (
-        <div className="absolute bottom-20 left-1/2 flex w-[calc(100%_-_2rem)] -translate-x-1/2 flex-wrap justify-center gap-2">
-          {character.defaultQuestions.map((question, index) => (
-            <Button
-              variant={"outline"}
-              size={"lg"}
-              key={index}
-              onClick={() => {
-                handleInputChange({
-                  target: { name: "prompt", value: question },
-                } as { target: EventTarget & HTMLInputElement })
-              }}
-            >
-              {question}
-            </Button>
-          ))}
-        </div>
-      )}
-
       <form
         onSubmit={handleSubmit}
         className="absolute bottom-2 left-1/2 flex w-2/3 -translate-x-1/2 items-center gap-2 p-4"

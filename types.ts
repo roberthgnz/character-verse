@@ -7,5 +7,5 @@ export interface Character {
   background: string[]
   motivation: string
   speechStyle: string
-  defaultQuestions: string[]
+  defaultMessage: string
 }
