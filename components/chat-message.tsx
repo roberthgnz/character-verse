@@ -15,16 +15,18 @@ interface ChatMessageProps {
 }
 
 export const ChatMessage = ({ role, content, character }: ChatMessageProps) => {
+    const isAssistant = role === 'assistant';
+
     return <div className={cn("flex items-start gap-3", {
-        "justify-end": role === 'user',
+        "justify-end": !isAssistant,
     })}>
-        {role === 'assistant' && <Avatar>
+        {isAssistant && <Avatar>
             <AvatarImage src={`/img/character/${character.name}.jpeg`} alt={character.name} />
             <AvatarFallback>{character.name.at(0)}</AvatarFallback>
         </Avatar>}
         <div className={cn("rounded-lg p-3 max-w-[80%]", {
-            "bg-muted": role === 'assistant',
-            "bg-primary text-primary-foreground": role === 'user',
+            "bg-muted": isAssistant,
+            "bg-primary text-primary-foreground": !isAssistant,
         })}>
             {content}
         </div>
