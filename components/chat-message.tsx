@@ -1,9 +1,9 @@
 import type { Character } from "@/types"
-import { Loader2Icon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
+import { ChatMessageActions } from "./chat-message-actions"
 import { ChatMessageSkeleton } from "./chat-message-skeleton"
 import { MessageAudioPlayer } from "./message-audio-player"
 
@@ -38,12 +38,13 @@ export const ChatMessage = ({
         </Avatar>
       )}
       <div
-        className={cn("max-w-[80%] rounded-lg p-3", {
+        className={cn("relative max-w-[80%] rounded-lg p-3", {
           "bg-muted": isAssistant,
           "bg-primary text-primary-foreground": !isAssistant,
         })}
       >
         {!loading ? content : <ChatMessageSkeleton />}
+        {isAssistant && <ChatMessageActions content={content} />}
       </div>
       {isAssistant && !loading && (
         <MessageAudioPlayer content={content} character={character.name} />
