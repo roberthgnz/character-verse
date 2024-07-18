@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { Character } from "@/types"
 import { useChat } from "ai/react"
 import { LoaderIcon, SendIcon } from "lucide-react"
@@ -14,19 +15,23 @@ interface ChatProps {
 }
 
 export const Chat = ({ character }: ChatProps) => {
-  const { messages, input, handleInputChange, handleSubmit, isLoading } =
-    useChat({
-      headers: {
-        "X-Character": character.name,
+  const [isLoading, setIsLoading] = useState(false)
+
+  const { messages, input, handleInputChange, handleSubmit } = useChat({
+    headers: {
+      "X-Character": character.name,
+    },
+    initialMessages: [
+      {
+        id: "assistant-0",
+        role: "assistant",
+        content: character.defaultMessage,
       },
-      initialMessages: [
-        {
-          id: "assistant-0",
-          role: "assistant",
-          content: character.defaultMessage,
-        },
-      ],
-    })
+    ],
+    onResponse() {
+      setIsLoading(false)
+    },
+  })
 
   return (
     <div className="relative flex h-full flex-col p-4">
@@ -44,10 +49,21 @@ export const Chat = ({ character }: ChatProps) => {
           {messages.map((message) => (
             <ChatMessage key={message.id} {...message} character={character} />
           ))}
+          {isLoading && (
+            <ChatMessage
+              role="assistant"
+              content=""
+              character={character}
+              loading
+            />
+          )}
         </div>
       )}
       <form
-        onSubmit={handleSubmit}
+        onSubmit={(e) => {
+          handleSubmit(e)
+          setIsLoading(true)
+        }}
         className="absolute bottom-2 left-1/2 flex w-2/3 -translate-x-1/2 items-center gap-2 p-4"
       >
         <Input
@@ -56,7 +72,7 @@ export const Chat = ({ character }: ChatProps) => {
           value={input}
           onChange={handleInputChange}
           disabled={isLoading}
-          placeholder={`Escribe un mensaje para ${character.name}...`}
+          placeholder={`Message to ${character.name}...`}
         />
         <Button type="submit" size={"icon"} disabled={isLoading}>
           {!isLoading ? (

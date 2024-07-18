@@ -1,17 +1,25 @@
 import type { Character } from "@/types"
+import { Loader2Icon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
+import { ChatMessageSkeleton } from "./chat-message-skeleton"
 import { MessageAudioPlayer } from "./message-audio-player"
 
 interface ChatMessageProps {
   content: string
   role: string
   character: Character
+  loading?: boolean
 }
 
-export const ChatMessage = ({ role, content, character }: ChatMessageProps) => {
+export const ChatMessage = ({
+  role,
+  content,
+  character,
+  loading,
+}: ChatMessageProps) => {
   const isAssistant = role === "assistant"
 
   return (
@@ -35,9 +43,9 @@ export const ChatMessage = ({ role, content, character }: ChatMessageProps) => {
           "bg-primary text-primary-foreground": !isAssistant,
         })}
       >
-        {content}
+        {!loading ? content : <ChatMessageSkeleton />}
       </div>
-      {isAssistant && (
+      {isAssistant && !loading && (
         <MessageAudioPlayer content={content} character={character.name} />
       )}
     </div>
