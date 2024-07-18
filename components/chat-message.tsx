@@ -44,7 +44,7 @@ export const ChatMessage = ({
         })}
       >
         {!loading ? content : <ChatMessageSkeleton />}
-        {isAssistant && <ChatMessageActions content={content} />}
+        {!loading && isAssistant && <ChatMessageActions content={content} />}
       </div>
       {isAssistant && !loading && (
         <MessageAudioPlayer content={content} character={character.name} />
