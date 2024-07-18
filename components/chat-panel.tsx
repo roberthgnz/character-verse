@@ -36,6 +36,7 @@ export const ChatPanel = ({ character }: ChatProps) => {
       },
     ],
     onResponse() {
+      setInput("")
       setIsLoading(false)
     },
   })
