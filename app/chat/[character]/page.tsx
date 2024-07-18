@@ -1,7 +1,7 @@
 import { characters } from "@/constants"
 import type { Character } from "@/types"
 
-import { Chat } from "@/components/chat"
+import { ChatPanel } from "@/components/chat-panel"
 import { ChatSettings } from "@/components/chat-settings"
 
 export default function Page({ params }: { params: { character: string } }) {
@@ -16,7 +16,7 @@ export default function Page({ params }: { params: { character: string } }) {
   return (
     <div className="bg-background flex h-screen flex-col">
       <div className="grid size-full grid-cols-[80%_auto] gap-4">
-        <Chat character={character} />
+        <ChatPanel character={character} />
         <div className="h-full border-l">
           <ChatSettings character={character} />
         </div>

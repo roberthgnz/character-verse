@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { Character } from "@/types"
 import { useChat } from "ai/react"
 import { LoaderIcon, SendIcon } from "lucide-react"
@@ -9,15 +9,19 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
 import { ChatMessage } from "./chat-message"
+import { SpeechToTextButton } from "./speech-to-text-button"
 
 interface ChatProps {
   character: Character
 }
 
-export const Chat = ({ character }: ChatProps) => {
+export const ChatPanel = ({ character }: ChatProps) => {
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
-  const { messages, input, handleInputChange, handleSubmit } = useChat({
+  const { messages, handleSubmit, handleInputChange } = useChat({
     headers: {
       "X-Character": character.name,
     },
@@ -32,6 +36,14 @@ export const Chat = ({ character }: ChatProps) => {
       setIsLoading(false)
     },
   })
+
+  const onTranscriptChange = (transcript: string) => {
+    setInput(transcript)
+  }
+
+  const onTranscriptEnd = () => {
+    handleInputChange({ target: { value: input } } as any)
+  }
 
   return (
     <div className="relative flex h-full flex-col p-4">
@@ -67,12 +79,20 @@ export const Chat = ({ character }: ChatProps) => {
         className="absolute bottom-2 left-1/2 flex w-2/3 -translate-x-1/2 items-center gap-2 p-4"
       >
         <Input
+          ref={inputRef}
           id="input"
           name="prompt"
           value={input}
-          onChange={handleInputChange}
+          onChange={(e) => {
+            handleInputChange(e)
+            setInput(e.target.value)
+          }}
           disabled={isLoading}
           placeholder={`Message to ${character.name}...`}
+        />
+        <SpeechToTextButton
+          onTranscriptChange={onTranscriptChange}
+          onTranscriptEnd={onTranscriptEnd}
         />
         <Button type="submit" size={"icon"} disabled={isLoading}>
           {!isLoading ? (
