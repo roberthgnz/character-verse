@@ -6,7 +6,8 @@ import { streamText, type CoreMessage } from "ai"
 export const maxDuration = 30
 
 export async function POST(req: Request) {
-  const { messages }: { messages: CoreMessage[] } = await req.json()
+  const { messages, data }: { messages: CoreMessage[]; data?: string } =
+    await req.json()
 
   const character = req.headers.get("x-character")
 
@@ -15,6 +16,14 @@ export async function POST(req: Request) {
   }
 
   const characterData = characters.find((c) => c.name === character)
+
+  if (characterData && data) {
+    const _data = JSON.parse(data)
+    if (_data?.characterContext) {
+      characterData.motivation = _data.characterContext.motivation
+      characterData.speechStyle = _data.characterContext.speechStyle
+    }
+  }
 
   const getGenderText = (gender?: string) => {
     return gender === "Male" ? "un hombre" : "una mujer"

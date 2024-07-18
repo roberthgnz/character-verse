@@ -1,6 +1,7 @@
 "use client"
 
 import { useRef, useState } from "react"
+import { getState } from "@/stores/use-character-store"
 import { Character } from "@/types"
 import { useChat } from "ai/react"
 import { LoaderIcon, SendIcon } from "lucide-react"
@@ -20,6 +21,8 @@ export const ChatPanel = ({ character }: ChatProps) => {
 
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+
+  const characterState = getState()
 
   const { messages, handleSubmit, handleInputChange } = useChat({
     headers: {
@@ -73,7 +76,9 @@ export const ChatPanel = ({ character }: ChatProps) => {
       )}
       <form
         onSubmit={(e) => {
-          handleSubmit(e)
+          handleSubmit(e, {
+            data: JSON.stringify({ characterContext: characterState }),
+          })
           setIsLoading(true)
         }}
         className="absolute bottom-2 left-1/2 flex w-2/3 -translate-x-1/2 items-center gap-2 p-4"

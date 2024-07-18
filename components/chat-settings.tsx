@@ -7,16 +7,18 @@ import { ShareIcon } from "lucide-react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
+import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
-
-import { Label } from "./ui/label"
-import { Textarea } from "./ui/textarea"
+import { Textarea } from "@/components/ui/textarea"
+import { useToast } from "@/components/ui/use-toast"
 
 interface ChatSettingsProps {
   character: Character
 }
 
 export const ChatSettings = ({ character }: ChatSettingsProps) => {
+  const { toast } = useToast()
+
   const [hasChanged, setHasChanged] = useState(false)
   const [state, setState] = useState({ motivation: "", speechStyle: "" })
 
@@ -29,6 +31,11 @@ export const ChatSettings = ({ character }: ChatSettingsProps) => {
   }
 
   const saveChanges = () => {
+    toast({
+      title: "Changes saved",
+      description: "Your character has been updated",
+    })
+    setHasChanged(false)
     setCharacterState(() => ({
       motivation: state.motivation,
       speechStyle: state.speechStyle,
@@ -93,7 +100,7 @@ export const ChatSettings = ({ character }: ChatSettingsProps) => {
         />
       </div>
       {hasChanged && (
-        <Button onClick={() => saveChanges()}>Save Changes</Button>
+        <Button onClick={() => saveChanges()}>Save changes</Button>
       )}
     </div>
   )
