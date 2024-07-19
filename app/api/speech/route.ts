@@ -4,11 +4,11 @@ import { Ratelimit } from "@upstash/ratelimit"
 
 import kv from "@/lib/kv"
 
-// Create a new ratelimiter, that allows 5 requests per 24 hours
+// Create a new ratelimiter, that allows 15 requests per 24 hours
 const ratelimit = kv
   ? new Ratelimit({
       redis: kv,
-      limiter: Ratelimit.fixedWindow(5, "24h"),
+      limiter: Ratelimit.fixedWindow(15, "24h"),
       analytics: true,
     })
   : undefined
