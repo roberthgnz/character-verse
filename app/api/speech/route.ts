@@ -27,8 +27,9 @@ export async function POST(req: Request) {
     const headersList = headers()
 
     const ipIdentifier = headersList.get("x-real-ip")
+    const identifier = `${ipIdentifier}-${character}`
 
-    const result = await ratelimit.limit(ipIdentifier ?? "")
+    const result = await ratelimit.limit(identifier)
 
     if (!result.success) {
       return new Response("Limit reached. Please try again in 24 hours.", {
@@ -62,6 +63,11 @@ export async function POST(req: Request) {
       },
     }),
   })
+
+  if (!voice.ok) {
+    const message = await voice.text()
+    return new Response(message, { status: voice.status })
+  }
 
   return new Response(voice.body)
 }
