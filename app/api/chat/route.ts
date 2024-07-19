@@ -12,7 +12,7 @@ export async function POST(req: Request) {
   const character = req.headers.get("x-character")
 
   if (!character) {
-    return new Response("Invalid request", { status: 400 })
+    return new Response("Character not found", { status: 404 })
   }
 
   const characterData = characters.find((c) => c.name === character)

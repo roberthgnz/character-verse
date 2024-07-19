@@ -6,6 +6,10 @@ export async function POST(req: Request) {
 
   const characterData = characters.find((c) => c.name === character)
 
+  if (!characterData) {
+    return new Response("Character not found", { status: 404 })
+  }
+
   const voice = await fetch("https://api.cartesia.ai/tts/bytes", {
     method: "POST",
     headers: {
