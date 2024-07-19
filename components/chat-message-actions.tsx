@@ -30,10 +30,10 @@ export const ChatMessageActions = ({ content }: any) => {
   }, [])
 
   return (
-    <div className="border-input bg-background absolute bottom-0 right-0 flex translate-y-1/2 items-center rounded-lg border px-2 py-1 shadow-sm transition">
+    <div className="border-input bg-background absolute bottom-0 right-0 flex translate-y-1/2 items-center rounded-lg border shadow-sm transition">
       <button
         type="button"
-        className="hover:bg-accent flex flex-row items-center gap-1 rounded-md p-1 py-0.5 text-xs transition-opacity delay-100"
+        className="hover:bg-accent flex flex-row items-center gap-1 rounded-md p-1 px-2 py-0.5 text-xs transition-opacity delay-100 "
         onClick={() => handleCopy(content)}
       >
         {copying ? <CheckCheckIcon size={12} /> : <Copy size={12} />}
