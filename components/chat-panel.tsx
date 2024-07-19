@@ -6,6 +6,7 @@ import { Character } from "@/types"
 import { useChat } from "ai/react"
 import { LoaderIcon, SendIcon } from "lucide-react"
 
+import { useScrollToBottom } from "@/hooks/use-scroll-to-bottom"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
@@ -17,12 +18,14 @@ interface ChatProps {
 }
 
 export const ChatPanel = ({ character }: ChatProps) => {
+  const characterState = getState()
+
   const inputRef = useRef<HTMLInputElement>(null)
 
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
-  const characterState = getState()
+  const { ref: scrollRef, scrollToBottom } = useScrollToBottom<HTMLDivElement>()
 
   const { messages, handleSubmit, handleInputChange } = useChat({
     headers: {
@@ -39,6 +42,9 @@ export const ChatPanel = ({ character }: ChatProps) => {
       setInput("")
       setIsLoading(false)
     },
+    onFinish() {
+      scrollToBottom()
+    },
   })
 
   const onTranscriptChange = (transcript: string) => {
@@ -50,7 +56,7 @@ export const ChatPanel = ({ character }: ChatProps) => {
   }
 
   return (
-    <div className="relative flex h-full flex-col p-4">
+    <div ref={scrollRef} className="flex h-full flex-col overflow-y-auto p-4">
       <div className="mx-auto flex w-2/3 flex-col items-center justify-between gap-2">
         <video className="size-32 rounded-full" muted loop autoPlay>
           <source
@@ -61,7 +67,7 @@ export const ChatPanel = ({ character }: ChatProps) => {
         <p className="text-lg font-semibold">{character.name}</p>
       </div>
       {messages.length !== 0 && (
-        <div className="mx-auto w-2/3 space-y-4 overflow-auto p-4">
+        <div className="mx-auto w-2/3 space-y-4 p-4 pb-20">
           {messages.map((message) => (
             <ChatMessage key={message.id} {...message} character={character} />
           ))}
@@ -82,31 +88,33 @@ export const ChatPanel = ({ character }: ChatProps) => {
           })
           setIsLoading(true)
         }}
-        className="absolute bottom-2 left-1/2 flex w-2/3 -translate-x-1/2 items-center gap-2 p-4"
+        className="bg-background absolute bottom-16  left-0 w-[calc(80%_+_1rem)] p-4"
       >
-        <Input
-          ref={inputRef}
-          id="input"
-          name="prompt"
-          value={input}
-          onChange={(e) => {
-            handleInputChange(e)
-            setInput(e.target.value)
-          }}
-          disabled={isLoading}
-          placeholder={`Message to ${character.name}...`}
-        />
-        <SpeechToTextButton
-          onTranscriptChange={onTranscriptChange}
-          onTranscriptEnd={onTranscriptEnd}
-        />
-        <Button type="submit" size={"icon"} disabled={isLoading}>
-          {!isLoading ? (
-            <SendIcon size={16} />
-          ) : (
-            <LoaderIcon size={16} className="animate-spin" />
-          )}
-        </Button>
+        <div className="mx-auto flex w-2/3 items-center gap-2">
+          <Input
+            ref={inputRef}
+            id="input"
+            name="prompt"
+            value={input}
+            onChange={(e) => {
+              handleInputChange(e)
+              setInput(e.target.value)
+            }}
+            disabled={isLoading}
+            placeholder={`Message to ${character.name}...`}
+          />
+          <SpeechToTextButton
+            onTranscriptChange={onTranscriptChange}
+            onTranscriptEnd={onTranscriptEnd}
+          />
+          <Button type="submit" size={"icon"} disabled={isLoading}>
+            {!isLoading ? (
+              <SendIcon size={16} />
+            ) : (
+              <LoaderIcon size={16} className="animate-spin" />
+            )}
+          </Button>
+        </div>
       </form>
     </div>
   )
