@@ -14,8 +14,8 @@ export default function Page({ params }: { params: { character: string } }) {
   }
 
   return (
-    <div className="bg-background flex h-screen flex-col">
-      <div className="grid size-full grid-cols-[80%_auto] gap-4">
+    <div className="bg-background flex h-[calc(100vh_-_8rem)] flex-col">
+      <div className="grid size-full grid-cols-[80%_auto] gap-4 overflow-hidden">
         <ChatPanel character={character} />
         <div className="h-full border-l">
           <ChatSettings character={character} />
