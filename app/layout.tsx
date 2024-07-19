@@ -2,6 +2,7 @@ import "./globals.css"
 
 import { Inter as FontSans } from "next/font/google"
 import Link from "next/link"
+import { Analytics } from "@vercel/analytics/react"
 
 import { cn } from "@/lib/utils"
 import { Toaster } from "@/components/ui/toaster"
@@ -69,6 +70,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           </p>
         </footer>
         <Toaster />
+        <Analytics />
       </body>
     </html>
   )
