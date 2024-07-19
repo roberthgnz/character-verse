@@ -28,14 +28,41 @@ export default function RootLayout({ children }: RootLayoutProps) {
       >
         <MainNav />
         {children}
-        <footer className="flex h-16 w-full shrink-0 items-center justify-center border-t bg-gradient-to-b px-4">
+        <footer className="flex h-16 w-full shrink-0 items-center justify-between border-t bg-gradient-to-b px-4">
           <p className="text-muted-foreground text-center text-sm">
-            Open source built with
-            <Link href={"https://nextjs.org/"} target="_blank">
-              Next.js
+            Built by{" "}
+            <Link
+              href={"https://x.com/roberthgnz"}
+              className="hover:underline"
+              target="_blank"
+            >
+              roberrthgnz
             </Link>
+            . The source code is available on{" "}
+            <Link
+              href={"https://github.com/roberthgnz/character-verse"}
+              className="hover:underline"
+              target="_blank"
+            >
+              GitHub
+            </Link>
+            .
+          </p>
+          <p className="text-muted-foreground text-center text-sm">
+            Powered by{" "}
+            <Link
+              href={"https://nextjs.org/"}
+              className="hover:underline"
+              target="_blank"
+            >
+              Next.js
+            </Link>{" "}
             and{" "}
-            <Link href={"https://github.com/vercel/ai"} target="_blank">
+            <Link
+              href={"https://github.com/vercel/ai"}
+              className="hover:underline"
+              target="_blank"
+            >
               Vercel AI SDK
             </Link>
             .
