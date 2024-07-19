@@ -1,11 +1,12 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { LoaderIcon, PlayIcon, StopCircleIcon } from "lucide-react"
+import { LoaderIcon, PlayIcon } from "lucide-react"
 
 import { useAudioPlayer } from "@/hooks/use-audio-player"
 
 import { Button } from "./ui/button"
+import { useToast } from "./ui/use-toast"
 
 export const MessageAudioPlayer = ({
   content,
@@ -14,6 +15,7 @@ export const MessageAudioPlayer = ({
   content: string
   character: string
 }) => {
+  const { toast } = useToast()
   const player = useAudioPlayer()
 
   const [generatingAudio, setGeneratingAudio] = useState(false)
@@ -28,9 +30,20 @@ export const MessageAudioPlayer = ({
         },
         body: JSON.stringify({ text, character }),
       })
+
+      if (!response.ok) {
+        const message = await response.text()
+        throw new Error(message)
+      }
+
       player.play(response.body as any)
-    } catch (error) {
+    } catch (error: any) {
       console.error(error)
+      toast({
+        title: "Failed to generate audio",
+        description: error.message,
+        variant: "destructive",
+      })
     } finally {
       setGeneratingAudio(false)
     }
