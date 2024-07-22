@@ -69,13 +69,8 @@ model Chat {
 model Message {
     id        String   @id @default(uuid())
     content   String
-    role      Role
+    role      String
     createdAt DateTime @default(now())
     chatId    String
     chat      Chat     @relation(fields: [chatId], references: [id])
-}
-
-enum Role {
-    USER
-    ASSISTANT
 }
