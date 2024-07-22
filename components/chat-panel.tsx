@@ -10,7 +10,7 @@ import { nanoid } from "nanoid"
 import { useScrollToBottom } from "@/hooks/use-scroll-to-bottom"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { saveChatMessage } from "@/app/actions"
+import { saveChatMessage } from "@/app/chat/actions"
 
 import { ChatMessage } from "./chat-message"
 import { SpeechToTextButton } from "./speech-to-text-button"

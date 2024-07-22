@@ -6,7 +6,7 @@ import type { Character } from "@/types"
 import { ChatList } from "@/components/chat-list"
 import { ChatPanel } from "@/components/chat-panel"
 import { ChatSettings } from "@/components/chat-settings"
-import { getChatRoom, getChatRooms } from "@/app/actions"
+import { getChatRoom, getChatRooms } from "@/app/chat/actions"
 
 export default async function Chat({
   params,

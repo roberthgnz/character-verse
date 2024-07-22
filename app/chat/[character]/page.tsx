@@ -3,7 +3,7 @@ import { auth, getUser } from "@/auth"
 import { characters } from "@/constants"
 import type { Character } from "@/types"
 
-import { createChatRoom } from "@/app/actions"
+import { createChatRoom } from "@/app/chat/actions"
 
 export default async function Page({
   params,
