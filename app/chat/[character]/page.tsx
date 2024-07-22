@@ -30,8 +30,13 @@ export default async function Page({
 
   const user = await getUser(session!.user!.email as string)
 
+  if (!user) {
+    return redirect("/login")
+  }
+
   const chat = await createChatRoom({
-    title: character.name,
+    title: "Chat with " + character.name,
+    character: character.name,
     userId: user!.id,
   })
 
