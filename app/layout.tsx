@@ -37,7 +37,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
               className="hover:underline"
               target="_blank"
             >
-              roberrthgnz
+              roberthgnz
             </Link>
             . The source code is available on{" "}
             <Link
