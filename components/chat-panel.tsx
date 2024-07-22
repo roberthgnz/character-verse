@@ -3,21 +3,29 @@
 import { useRef, useState } from "react"
 import { getState } from "@/stores/use-character-store"
 import { Character } from "@/types"
-import { useChat } from "ai/react"
+import { useChat, type Message } from "ai/react"
 import { LoaderIcon, SendIcon } from "lucide-react"
+import { nanoid } from "nanoid"
 
 import { useScrollToBottom } from "@/hooks/use-scroll-to-bottom"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { saveChatMessage } from "@/app/actions"
 
 import { ChatMessage } from "./chat-message"
 import { SpeechToTextButton } from "./speech-to-text-button"
 
 interface ChatProps {
+  chatId: string
   character: Character
+  initialMessages: Message[]
 }
 
-export const ChatPanel = ({ character }: ChatProps) => {
+export const ChatPanel = ({
+  chatId,
+  character,
+  initialMessages,
+}: ChatProps) => {
   const characterState = getState()
 
   const inputRef = useRef<HTMLInputElement>(null)
@@ -31,19 +39,14 @@ export const ChatPanel = ({ character }: ChatProps) => {
     headers: {
       "X-Character": character.name,
     },
-    initialMessages: [
-      {
-        id: "assistant-0",
-        role: "assistant",
-        content: character.defaultMessage,
-      },
-    ],
+    initialMessages,
     onResponse() {
       setInput("")
       setIsLoading(false)
     },
-    onFinish() {
+    onFinish(message) {
       scrollToBottom()
+      saveChatMessage({ ...message, chatId })
     },
   })
 
@@ -86,6 +89,17 @@ export const ChatPanel = ({ character }: ChatProps) => {
           handleSubmit(e, {
             data: JSON.stringify({ characterContext: characterState }),
           })
+
+          const message = {
+            chatId,
+            id: nanoid(7),
+            role: "user",
+            content: input,
+            createdAt: new Date().toISOString(),
+          }
+
+          saveChatMessage(message)
+
           setIsLoading(true)
         }}
         className="bg-background absolute bottom-16  left-0 w-[calc(80%_+_1rem)] p-4"
