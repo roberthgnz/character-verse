@@ -28,6 +28,17 @@ export const getChatRoom = async (chatId: string) => {
   return chat
 }
 
+export const getChatRooms = async (userId: string, character: string) => {
+  const chats = await prisma.chat.findMany({
+    where: {
+      userId,
+      character,
+    },
+  })
+
+  return chats
+}
+
 export const saveChatMessage = async ({
   id,
   chatId,

@@ -3,9 +3,10 @@ import { auth } from "@/auth"
 import { characters } from "@/constants"
 import type { Character } from "@/types"
 
+import { ChatList } from "@/components/chat-list"
 import { ChatPanel } from "@/components/chat-panel"
 import { ChatSettings } from "@/components/chat-settings"
-import { getChatRoom } from "@/app/actions"
+import { getChatRoom, getChatRooms } from "@/app/actions"
 
 export default async function Chat({
   params,
@@ -40,6 +41,8 @@ export default async function Chat({
     return redirect("/")
   }
 
+  const chats = await getChatRooms(chat.user.id, character.name)
+
   const initialMessages = [
     {
       id: "assistant-0",
@@ -52,7 +55,9 @@ export default async function Chat({
   return (
     <div className="bg-background flex h-[calc(100vh_-_8rem)] flex-col">
       <div className="grid size-full grid-cols-[20%_auto_20%] gap-4 overflow-hidden">
-        <div className="h-full border-r"></div>
+        <div className="h-full border-r">
+          <ChatList character={character} chats={chats} />
+        </div>
         <ChatPanel
           chatId={params.chatId}
           character={character}
