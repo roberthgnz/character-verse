@@ -1,17 +1,48 @@
 "use server"
 
+import type { Message } from "@prisma/client"
+
 import prisma from "@/lib/prisma"
 
-export const createChatRoom = async ({ title, character, userId }: any) => {
-  const chat = await prisma.chat.create({
-    data: {
+export const createChatRoom = async ({
+  title,
+  character,
+  userId,
+  initialMessage,
+}: {
+  title: string
+  character: string
+  userId: string
+  initialMessage?: Partial<Message>
+}) => {
+  try {
+    const data: any = {
       title,
       character,
       userId,
-    },
-  })
+    }
 
-  return chat
+    if (initialMessage) {
+      data.messages = {
+        create: initialMessage,
+      }
+    }
+
+    const chat = await prisma.chat.create({
+      data,
+    })
+
+    return {
+      data: chat,
+      error: null,
+    }
+  } catch (error: any) {
+    console.error(error)
+    return {
+      data: null,
+      error: error.message,
+    }
+  }
 }
 
 export const getChatRoom = async (chatId: string) => {
@@ -44,15 +75,13 @@ export const saveChatMessage = async ({
   chatId,
   role,
   content,
-  createdAt,
-}: any) => {
+}: Omit<Message, "createdAt">) => {
   try {
     await prisma.message.create({
       data: {
         id,
         role,
         content,
-        createdAt,
         chatId,
       },
     })
