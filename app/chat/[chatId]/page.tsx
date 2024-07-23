@@ -31,15 +31,6 @@ export default async function Chat({ params }: { params: { chatId: string } }) {
 
   const chats = await getChatRooms(chat.user.id, character.name)
 
-  const initialMessages = [
-    {
-      id: "assistant-0",
-      role: "assistant",
-      content: character.defaultMessage,
-    },
-    ...(chat.messages as any[]),
-  ]
-
   return (
     <div className="bg-background flex h-[calc(100vh_-_8rem)] flex-col">
       <div className="grid size-full grid-cols-[20%_auto_20%] gap-4 overflow-hidden">
@@ -49,7 +40,7 @@ export default async function Chat({ params }: { params: { chatId: string } }) {
         <ChatPanel
           chatId={params.chatId}
           character={character}
-          initialMessages={initialMessages}
+          initialMessages={chat.messages as any[]}
         />
         <div className="h-full border-l">
           <ChatSettings character={character} />
