@@ -16,6 +16,7 @@ model User {
     accounts      Account[]
     sessions      Session[]
     Chat          Chat[]
+    isAnonymous   Boolean   @default(false)
     createdAt     DateTime  @default(now())
     updatedAt     DateTime  @updatedAt
 }

@@ -1,18 +1,34 @@
 "use client"
 
+import { useState } from "react"
 import { signIn } from "next-auth/react"
 
 import { Button } from "@/components/ui/button"
 
 export const SignInForm = () => {
-  async function SignInWithGitHub(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
+  const [isLoading, setIsLoading] = useState(false)
+
+  const signInWithGitHub = async () => {
+    setIsLoading(true)
     await signIn("github", { callbackUrl: "/" })
+    setIsLoading(false)
+  }
+
+  const signInAsGuest = async () => {
+    setIsLoading(true)
+    await signIn("anonymous", { callbackUrl: "/" })
+    setIsLoading(false)
   }
 
   return (
-    <form onSubmit={SignInWithGitHub} className="flex items-center gap-4">
-      <Button variant={"secondary"} type="submit" className="w-full space-x-2">
+    <div className="flex items-center gap-4">
+      <Button
+        variant={"secondary"}
+        type="submit"
+        className="w-full space-x-2"
+        onClick={signInWithGitHub}
+        disabled={isLoading}
+      >
         <svg
           height="16"
           aria-hidden="true"
@@ -26,9 +42,15 @@ export const SignInForm = () => {
         <span>Continue with GitHub</span>
       </Button>
       <p>or</p>
-      <Button variant={"outline"} type="button" className="w-full space-x-2">
+      <Button
+        variant={"outline"}
+        type="button"
+        className="w-full space-x-2"
+        onClick={signInAsGuest}
+        disabled={isLoading}
+      >
         Continue as Guest
       </Button>
-    </form>
+    </div>
   )
 }

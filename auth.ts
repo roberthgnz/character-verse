@@ -1,5 +1,4 @@
 import { PrismaAdapter } from "@auth/prisma-adapter"
-import type { User } from "@prisma/client"
 import NextAuth from "next-auth"
 
 import authConfig from "./auth.config"
@@ -12,7 +11,7 @@ export const { handlers, auth } = NextAuth({
   ...authConfig,
 })
 
-export const getUser = (email: string): Promise<User | null> => {
+export const getUser = (email: string) => {
   try {
     return prisma.user.findUnique({ where: { email } })
   } catch (error) {
