@@ -65,14 +65,19 @@ export const ChatPanel = ({
     handleInputChange({ target: { value: input } } as any)
   }
 
-  useEffect(() => {
+  const initChat = async () => {
     const last = messages[messages.length - 1]
     if (last.role === "user" && !isCalling) {
       messages.pop()
-      append(last)
+      setIsLoading(true)
+
+      await append(last)
+
+      setIsLoading(false)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isCalling])
+  }
+
+  initChat()
 
   return (
     <div ref={scrollRef} className="flex h-full flex-col overflow-y-auto p-4">
