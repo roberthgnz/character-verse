@@ -5,7 +5,7 @@ import type { Character } from "@/types"
 export const CharacterCard = ({ character }: { character: Character }) => {
   return (
     <Link
-      href={`/chat/${character.name}`}
+      href={`/chat/new?character=${character.name}`}
       key={character.name}
       className="bg-background border-primary flex cursor-pointer overflow-hidden rounded-lg border shadow transition-transform hover:scale-105"
     >
