@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { getState } from "@/stores/use-character-store"
 import { Character } from "@/types"
 import { useChat, type Message } from "ai/react"
@@ -28,6 +28,7 @@ export const ChatPanel = ({
 }: ChatProps) => {
   const characterState = getState()
 
+  const formRef = useRef<HTMLFormElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const [input, setInput] = useState("")
@@ -35,7 +36,13 @@ export const ChatPanel = ({
 
   const { ref: scrollRef, scrollToBottom } = useScrollToBottom<HTMLDivElement>()
 
-  const { messages, handleSubmit, handleInputChange } = useChat({
+  const {
+    messages,
+    handleSubmit,
+    handleInputChange,
+    append,
+    isLoading: isCalling,
+  } = useChat({
     headers: {
       "X-Character": character.name,
     },
@@ -57,6 +64,15 @@ export const ChatPanel = ({
   const onTranscriptEnd = () => {
     handleInputChange({ target: { value: input } } as any)
   }
+
+  useEffect(() => {
+    const last = messages[messages.length - 1]
+    if (last.role === "user" && !isCalling) {
+      messages.pop()
+      append(last)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isCalling])
 
   return (
     <div ref={scrollRef} className="flex h-full flex-col overflow-y-auto p-4">
@@ -85,6 +101,7 @@ export const ChatPanel = ({
         </div>
       )}
       <form
+        ref={formRef}
         onSubmit={(e) => {
           handleSubmit(e, {
             data: JSON.stringify({ characterContext: characterState }),
@@ -95,7 +112,6 @@ export const ChatPanel = ({
             id: nanoid(7),
             role: "user",
             content: input,
-            createdAt: new Date().toISOString(),
           }
 
           saveChatMessage(message)
