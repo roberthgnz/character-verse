@@ -1,32 +1,12 @@
-import { NextRequest, NextResponse } from "next/server"
-import { auth } from "@/auth"
+import { NextResponse } from "next/server"
 
 import prisma from "@/lib/prisma"
 
-export async function GET(req: NextRequest) {
-  const getHostOrigin = () => {
-    return process.env.NODE_ENV === "development"
-      ? "localhost:3000"
-      : "character-verse.vercel.app"
-  }
-
-  const isSameOrigin = req.headers.get("host") === getHostOrigin()
-
-  if (!isSameOrigin) {
-    return NextResponse.json("Unauthorized", { status: 401 })
-  }
-
-  const session = await auth()
-
-  if (!session) {
-    return NextResponse.json("Unauthorized", { status: 401 })
-  }
-
+export async function GET() {
   try {
     // Use deleteMany to prevent throwing an error if the user doesn't exist
     const result = await prisma.user.deleteMany({
       where: {
-        email: session!.user!.email as string,
         isAnonymous: true,
         // Delete if the created date is older than 1 day
         createdAt: {
