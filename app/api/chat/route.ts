@@ -20,8 +20,10 @@ export async function POST(req: Request) {
   if (characterData && data) {
     const _data = JSON.parse(data)
     if (_data?.characterContext) {
-      characterData.motivation = _data.characterContext.motivation
-      characterData.speechStyle = _data.characterContext.speechStyle
+      characterData.motivation =
+        _data.characterContext.motivation || characterData.motivation
+      characterData.speechStyle =
+        _data.characterContext.speechStyle || characterData.speechStyle
     }
   }
 
