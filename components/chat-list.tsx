@@ -16,7 +16,7 @@ export const ChatList = ({
         <span className="text-sm font-medium">Chat History</span>
       </div>
       <Button variant={"outline"} className="w-full" asChild>
-        <Link href={`/chat/${character.name}`}>
+        <Link href={`/chat/new?character=${character.name}`}>
           <PlusCircle className="mr-2 size-3" />
           New Chat
         </Link>
@@ -30,10 +30,7 @@ export const ChatList = ({
             title={chat.title}
             asChild
           >
-            <Link
-              href={`/chat/${character.name}/${chat.id}`}
-              className="flex items-center"
-            >
+            <Link href={`/chat/${chat.id}`} className="flex items-center">
               <MessageSquareText className="mr-2 size-3" />
               <span className="whitespace-nowrap">{chat.title}</span>
             </Link>
