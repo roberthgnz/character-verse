@@ -1,15 +1,29 @@
+import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 import { auth, getUser } from "@/auth"
 import { characters } from "@/constants"
 import type { Character } from "@/types"
 
 import { ChatForm } from "@/components/chat-form"
+import { generateInitialAIMessage } from "@/app/ai/actions"
 
-export default async function Page({
-  searchParams,
-}: {
+interface PageProps {
   searchParams: { character: string }
-}) {
+}
+
+export async function generateMetadata({
+  searchParams,
+}: PageProps): Promise<Metadata> {
+  const character = characters.find(
+    (c) => c.name === searchParams.character
+  ) as Character | undefined
+
+  return {
+    title: character?.name ? `${character?.name} Chat` : "Chat",
+  }
+}
+
+export default async function Page({ searchParams }: PageProps) {
   const character = characters.find(
     (c) => c.name === searchParams.character
   ) as Character | undefined
@@ -32,6 +46,12 @@ export default async function Page({
 
   if (!user) {
     return redirect("/login")
+  }
+
+  const generatedMessage = await generateInitialAIMessage(character)
+
+  if (generatedMessage) {
+    character.defaultMessage = generatedMessage
   }
 
   return (
