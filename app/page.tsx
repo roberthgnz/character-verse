@@ -1,13 +1,17 @@
 import Link from "next/link"
+import { auth } from "@/auth"
 import { characters } from "@/constants"
 
 import { CharacterCard } from "@/components/character-card"
+import { SignInForm } from "@/components/login-form"
 
 export const metadata = {
   title: "CharacterVerse",
 }
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth()
+
   return (
     <div className="container mx-auto max-w-screen-xl flex-1 space-y-8 px-4 py-8">
       <div className="space-y-1 rounded-lg border p-3 text-center">
@@ -35,6 +39,11 @@ export default function Home() {
           </Link>
           .
         </p>
+        {!session && (
+          <div className="mx-auto !mt-6 w-1/2">
+            <SignInForm />
+          </div>
+        )}
       </div>
       <div className="grid w-full gap-8 md:grid-cols-4">
         {characters.map((character) => (
