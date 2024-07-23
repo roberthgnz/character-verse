@@ -45,11 +45,18 @@ export const ChatForm = ({ userId, character }: ChatFormProps) => {
         userId,
         title: "Chat with " + character.name,
         character: character.name,
-        initialMessage: {
-          id: nanoid(7),
-          role: "user",
-          content: message,
-        },
+        initialMessages: [
+          {
+            id: nanoid(7),
+            role: "assistant",
+            content: character.defaultMessage,
+          },
+          {
+            id: nanoid(7),
+            role: "user",
+            content: message,
+          },
+        ],
       })
 
       setIsLoading(false)
