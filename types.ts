@@ -8,4 +8,5 @@ export interface Character {
   motivation: string
   speechStyle: string
   defaultMessage: string
+  voiceEmbedding: number[]
 }
