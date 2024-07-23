@@ -8,12 +8,12 @@ export const createChatRoom = async ({
   title,
   character,
   userId,
-  initialMessage,
+  initialMessages,
 }: {
   title: string
   character: string
   userId: string
-  initialMessage?: Partial<Message>
+  initialMessages?: Partial<Message>[]
 }) => {
   try {
     const data: any = {
@@ -22,9 +22,11 @@ export const createChatRoom = async ({
       userId,
     }
 
-    if (initialMessage) {
+    if (initialMessages?.length) {
       data.messages = {
-        create: initialMessage,
+        createMany: {
+          data: initialMessages,
+        },
       }
     }
 
