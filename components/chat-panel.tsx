@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { getState } from "@/stores/use-character-store"
 import { Character } from "@/types"
 import { useChat, type Message } from "ai/react"
@@ -53,6 +53,7 @@ export const ChatPanel = ({
     },
     onFinish(message) {
       scrollToBottom()
+      // Save the message from the assistant
       saveChatMessage({ ...message, chatId })
     },
   })
