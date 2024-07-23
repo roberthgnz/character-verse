@@ -3,6 +3,10 @@ import { characters } from "@/constants"
 
 import { CharacterCard } from "@/components/character-card"
 
+export const metadata = {
+  title: "CharacterVerse",
+}
+
 export default function Home() {
   return (
     <div className="container mx-auto max-w-screen-xl flex-1 space-y-8 px-4 py-8">
