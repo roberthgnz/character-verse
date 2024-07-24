@@ -37,7 +37,7 @@ export const ChatHistory = ({
       await removeChatRoom(chatId)
       setHistory((prev) => prev.filter((chat) => chat.id !== chatId))
       if (pathname === `/chat/${chatId}`) {
-        router.push("/")
+        router.push(`/chat/new?character=${character.name}`)
       }
     }
   }
