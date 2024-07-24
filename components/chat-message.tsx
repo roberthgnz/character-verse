@@ -39,8 +39,8 @@ export const ChatMessage = ({
       )}
       <div
         className={cn("relative max-w-[80%] rounded-lg p-3", {
-          "bg-muted": isAssistant,
-          "border text-primary-foreground": !isAssistant,
+          "bg-muted": !isAssistant,
+          "border text-primary-foreground": isAssistant,
         })}
       >
         {!loading ? content : <ChatMessageSkeleton />}
