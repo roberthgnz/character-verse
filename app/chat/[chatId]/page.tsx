@@ -33,7 +33,7 @@ export default async function Chat({ params }: { params: { chatId: string } }) {
 
   return (
     <div className="bg-background flex h-[calc(100vh_-_8rem)] flex-col">
-      <div className="grid size-full grid-cols-[20%_auto_20%] gap-4 overflow-hidden">
+      <div className="grid size-full grid-cols-[15%_auto_20%] gap-4 overflow-hidden">
         <div className="h-full border-r">
           <ChatList character={character} chats={chats} />
         </div>
