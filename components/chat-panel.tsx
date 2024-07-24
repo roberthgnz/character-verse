@@ -10,6 +10,7 @@ import { nanoid } from "nanoid"
 import { useScrollToBottom } from "@/hooks/use-scroll-to-bottom"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { generateTitle } from "@/app/ai/actions"
 import { saveChatMessage } from "@/app/chat/actions"
 
 import { ChatMessage } from "./chat-message"
@@ -55,6 +56,12 @@ export const ChatPanel = ({
       scrollToBottom()
       // Save the message from the assistant
       saveChatMessage({ ...message, chatId })
+      // Generate title for the chat
+      if (messages.length - 1 === 4) {
+        generateTitle(messages as any[]).then((title) => {
+          console.log(title)
+        })
+      }
     },
   })
 
@@ -109,6 +116,8 @@ export const ChatPanel = ({
       <form
         ref={formRef}
         onSubmit={(e) => {
+          if (input.trim() === "") return
+
           handleSubmit(e, {
             data: JSON.stringify({ characterContext: characterState }),
           })
@@ -138,6 +147,7 @@ export const ChatPanel = ({
             }}
             disabled={isLoading}
             placeholder={`Message to ${character.name}...`}
+            required
           />
           <SpeechToTextButton
             onTranscriptChange={onTranscriptChange}
