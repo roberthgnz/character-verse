@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react"
 import { useRouter } from "next/navigation"
+import { useInitialCharacterMessage } from "@/context/message-context"
 import type { Character } from "@/types"
 import { ForwardIcon, LoaderIcon } from "lucide-react"
 import mergeRefs from "merge-refs"
@@ -23,6 +24,8 @@ const TEXTAREA_HEIGHT = 80
 
 export const ChatForm = ({ userId, character }: ChatFormProps) => {
   const router = useRouter()
+
+  const { initialCharacterMessage } = useInitialCharacterMessage()
 
   const [message, setMessage] = useState("")
   const [isLoading, setIsLoading] = useState(false)
@@ -49,7 +52,7 @@ export const ChatForm = ({ userId, character }: ChatFormProps) => {
           {
             id: nanoid(7),
             role: "assistant",
-            content: character.defaultMessage,
+            content: initialCharacterMessage,
           },
           {
             id: nanoid(7),

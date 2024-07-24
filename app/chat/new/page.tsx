@@ -2,10 +2,11 @@ import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 import { auth, getUser } from "@/auth"
 import { characters } from "@/constants"
+import { InitialCharacterMessageProvider } from "@/context/message-context"
 import type { Character } from "@/types"
 
 import { ChatForm } from "@/components/chat-form"
-import { generateInitialAIMessage } from "@/app/ai/actions"
+import { InitialCharacterMessage } from "@/components/initial-character-message"
 
 interface PageProps {
   searchParams: { character: string }
@@ -48,16 +49,10 @@ export default async function Page({ searchParams }: PageProps) {
     return redirect("/login")
   }
 
-  const generatedMessage = await generateInitialAIMessage(character)
-
-  if (generatedMessage) {
-    character.defaultMessage = generatedMessage
-  }
-
   return (
     <div className="bg-background flex h-[calc(100vh_-_8rem)] flex-col items-center justify-center">
       <div className="w-full max-w-screen-md">
-        <div className="flex flex-col items-center gap-4">
+        <div className="flex flex-col items-center gap-8">
           <video className="size-64 rounded-full" muted loop autoPlay>
             <source
               src={`/video/character/${character.name}.mp4`}
@@ -65,12 +60,12 @@ export default async function Page({ searchParams }: PageProps) {
             />
           </video>
           <p className="text-lg font-semibold">{character.name}</p>
-          <div className="flex items-start gap-3">
-            <div className="bg-muted relative mx-auto max-w-[80%] rounded-lg p-3">
-              {character.defaultMessage}
-            </div>
-          </div>
-          <ChatForm userId={user.id} character={character} />
+          <InitialCharacterMessageProvider
+            defaultMessage={character.defaultMessage}
+          >
+            <InitialCharacterMessage character={character} />
+            <ChatForm userId={user.id} character={character} />
+          </InitialCharacterMessageProvider>
         </div>
       </div>
     </div>
