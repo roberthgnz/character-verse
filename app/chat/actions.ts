@@ -67,6 +67,9 @@ export const getChatRooms = async (userId: string, character: string) => {
       userId,
       character,
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   })
 
   return chats
