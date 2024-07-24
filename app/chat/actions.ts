@@ -72,6 +72,29 @@ export const getChatRooms = async (userId: string, character: string) => {
   return chats
 }
 
+export const removeChatRoom = async (chatId: string) => {
+  try {
+    await prisma.chat.delete({
+      where: {
+        id: chatId,
+      },
+    })
+
+    return {
+      data: {
+        success: true,
+      },
+      error: null,
+    }
+  } catch (error: any) {
+    console.error(error)
+    return {
+      data: null,
+      error: error.message,
+    }
+  }
+}
+
 export const saveChatMessage = async ({
   id,
   chatId,
