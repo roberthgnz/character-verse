@@ -3,7 +3,7 @@ import { auth } from "@/auth"
 import { characters } from "@/constants"
 import type { Character } from "@/types"
 
-import { ChatList } from "@/components/chat-list"
+import { ChatHistory } from "@/components/chat-history"
 import { ChatPanel } from "@/components/chat-panel"
 import { ChatSettings } from "@/components/chat-settings"
 import { getChatRoom, getChatRooms } from "@/app/chat/actions"
@@ -35,7 +35,7 @@ export default async function Chat({ params }: { params: { chatId: string } }) {
     <div className="bg-background flex h-[calc(100vh_-_8rem)] flex-col">
       <div className="grid size-full grid-cols-[15%_auto_20%] gap-4 overflow-hidden">
         <div className="h-full border-r">
-          <ChatList character={character} chats={chats} />
+          <ChatHistory character={character} chats={chats} />
         </div>
         <ChatPanel
           chatId={params.chatId}
