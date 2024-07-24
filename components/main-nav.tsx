@@ -2,6 +2,7 @@ import Link from "next/link"
 import { Sparkles } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import { UserNav } from "@/components/user-nav"
 
 export const MainNav = () => {
   return (
@@ -12,7 +13,7 @@ export const MainNav = () => {
           <span>CharacterVerse</span>
         </Link>
       </h1>
-      <nav>
+      <nav className="flex items-center gap-4">
         <ul className="flex gap-1">
           <li>
             <Button variant={"ghost"} asChild>
@@ -52,6 +53,7 @@ export const MainNav = () => {
             </Button>
           </li>
         </ul>
+        <UserNav />
       </nav>
     </header>
   )
