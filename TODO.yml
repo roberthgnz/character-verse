@@ -1,0 +1,12 @@
+TODO
+- Show current logged user in the navbar
+- Add a button to logout
+- Add param to redirect when a character if clicked and the user is not logged
+- Fix chat message input
+- When there are messages and the state is loading the skeleon should be shown
+- Validate motivation and speach style input before save
+
+FEATURES
+- Clear chat messages
+- Delete chat messages
+- Delete specific chat message

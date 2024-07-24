@@ -7,9 +7,10 @@ import { useChat, type Message } from "ai/react"
 import { LoaderIcon, SendIcon } from "lucide-react"
 import { nanoid } from "nanoid"
 
-import { useScrollToBottom } from "@/hooks/use-scroll-to-bottom"
+import { useScrollAnchor } from "@/hooks/use-scroll-anchor"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { ButtonScrollToBottom } from "@/components/button-scroll-to-bottom"
 import { generateTitle } from "@/app/ai/actions"
 import { saveChatMessage } from "@/app/chat/actions"
 
@@ -29,17 +30,17 @@ export const ChatPanel = ({
 }: ChatProps) => {
   const characterState = getState()
 
+  const { scrollRef, messagesRef, visibilityRef, isAtBottom, scrollToBottom } =
+    useScrollAnchor()
+
   const formRef = useRef<HTMLFormElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
-  const { ref: scrollRef, scrollToBottom } = useScrollToBottom<HTMLDivElement>()
-
   const {
     messages,
-    handleSubmit,
     handleInputChange,
     append,
     isLoading: isCalling,
@@ -53,7 +54,6 @@ export const ChatPanel = ({
       setIsLoading(false)
     },
     onFinish(message) {
-      scrollToBottom()
       // Save the message from the assistant
       saveChatMessage({ ...message, chatId })
       // Generate title for the chat
@@ -73,6 +73,28 @@ export const ChatPanel = ({
     handleInputChange({ target: { value: input } } as any)
   }
 
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    const message = {
+      role: "user",
+      content: input,
+    }
+
+    setIsLoading(true)
+    scrollToBottom()
+
+    await append(message as Message, {
+      data: JSON.stringify({ characterContext: characterState }),
+    })
+
+    setInput("")
+    setIsLoading(false)
+    scrollToBottom()
+
+    saveChatMessage({ ...message, id: nanoid(7), chatId })
+  }
+
   const initChat = async () => {
     const last = messages[messages.length - 1]
     if (last.role === "user" && !isCalling) {
@@ -88,53 +110,34 @@ export const ChatPanel = ({
   initChat()
 
   return (
-    <div ref={scrollRef} className="flex h-full flex-col overflow-y-auto p-4">
-      <div className="mx-auto flex w-2/3 flex-col items-center justify-between gap-2">
-        <video className="size-32 rounded-full" muted loop autoPlay>
-          <source
-            src={`/video/character/${character.name}.mp4`}
-            type="video/mp4"
-          />
-        </video>
-        <p className="text-lg font-semibold">{character.name}</p>
+    <div className="relative flex h-[calc(100vh_-_8rem)] flex-col">
+      <ButtonScrollToBottom
+        isAtBottom={isAtBottom}
+        scrollToBottom={scrollToBottom}
+      />
+      <div ref={scrollRef} className="h-full overflow-y-auto">
+        {messages.length !== 0 && (
+          <div ref={messagesRef} className="mx-auto w-2/3 space-y-4 p-4 pb-20">
+            {messages.map((message) => (
+              <ChatMessage
+                key={message.id}
+                {...message}
+                character={character}
+              />
+            ))}
+            {isLoading && (
+              <ChatMessage
+                role="assistant"
+                content=""
+                character={character}
+                loading
+              />
+            )}
+          </div>
+        )}
       </div>
-      {messages.length !== 0 && (
-        <div className="mx-auto w-2/3 space-y-4 p-4 pb-20">
-          {messages.map((message) => (
-            <ChatMessage key={message.id} {...message} character={character} />
-          ))}
-          {isLoading && (
-            <ChatMessage
-              role="assistant"
-              content=""
-              character={character}
-              loading
-            />
-          )}
-        </div>
-      )}
-      <form
-        ref={formRef}
-        onSubmit={(e) => {
-          if (input.trim() === "") return
-
-          handleSubmit(e, {
-            data: JSON.stringify({ characterContext: characterState }),
-          })
-
-          const message = {
-            chatId,
-            id: nanoid(7),
-            role: "user",
-            content: input,
-          }
-
-          saveChatMessage(message)
-
-          setIsLoading(true)
-        }}
-        className="bg-background absolute bottom-16  left-0 w-[calc(80%_+_1rem)] p-4"
-      >
+      <div className="h-px w-full" ref={visibilityRef} />
+      <form ref={formRef} onSubmit={onSubmit} className="pb-4">
         <div className="mx-auto flex w-2/3 items-center gap-2">
           <Input
             ref={inputRef}
