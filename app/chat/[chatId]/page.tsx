@@ -32,7 +32,7 @@ export default async function Chat({ params }: { params: { chatId: string } }) {
   const chats = await getChatRooms(chat.user.id, character.name)
 
   return (
-    <div className="bg-background flex h-[calc(100vh_-_8rem)] flex-col">
+    <div className="bg-background flex h-[calc(100vh_-_8rem)] flex-col px-4">
       <div className="mx-auto grid h-full max-w-screen-2xl grid-cols-[15%_auto_20%] gap-4 overflow-hidden">
         <ChatHistory character={character} chats={chats} />
         <ChatPanel
