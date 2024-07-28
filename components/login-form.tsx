@@ -1,23 +1,31 @@
 "use client"
 
 import { useState } from "react"
+import { useSearchParams } from "next/navigation"
 import { Loader2Icon } from "lucide-react"
 import { signIn } from "next-auth/react"
 
 import { Button } from "@/components/ui/button"
 
 export const SignInForm = () => {
+  const params = useSearchParams()
+
   const [isLoading, setIsLoading] = useState(false)
+
+  const getCallbackUrl = () => {
+    const character = params.get("character")
+    return character ? `/chat/new?character=${character}` : "/"
+  }
 
   const signInWithGitHub = async () => {
     setIsLoading(true)
-    await signIn("github", { callbackUrl: "/" })
+    await signIn("github", { callbackUrl: getCallbackUrl() })
     setIsLoading(false)
   }
 
   const signInAsGuest = async () => {
     setIsLoading(true)
-    await signIn("anonymous", { callbackUrl: "/" })
+    await signIn("anonymous", { callbackUrl: getCallbackUrl() })
     setIsLoading(false)
   }
 

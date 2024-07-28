@@ -39,14 +39,16 @@ export default async function Page({ searchParams }: PageProps) {
 
   const session = await auth()
 
+  const redirectUrl = `/login?character=${character.name}`
+
   if (!session) {
-    return redirect("/login")
+    return redirect(redirectUrl)
   }
 
   const user = await getUser(session!.user!.email as string)
 
   if (!user) {
-    return redirect("/login")
+    return redirect(redirectUrl)
   }
 
   return (
