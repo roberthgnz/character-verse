@@ -3,6 +3,13 @@
 import React, { useEffect, useRef } from "react"
 import { createNoise3D } from "simplex-noise"
 
+// Helper functions
+const rand = (max: number) => Math.random() * max
+const fadeInOut = (t: number, m: number) => {
+  let hm = 0.5 * m
+  return Math.abs(((t + hm) % m) - hm) / hm
+}
+
 export const ShiftCanvasBackground = () => {
   const canvasRef = useRef(null)
   const containerRef = useRef(null)
@@ -23,7 +30,10 @@ export const ShiftCanvasBackground = () => {
     const zOff = 0.0015
     const backgroundColor = "hsla(0,0%,5%,1)"
 
-    let canvas, ctx, circleProps, baseHue
+    let canvas: HTMLCanvasElement,
+      ctx: CanvasRenderingContext2D,
+      circleProps: Float32Array,
+      baseHue: number
 
     const initCircles = () => {
       circleProps = new Float32Array(circlePropsLength)
@@ -34,7 +44,7 @@ export const ShiftCanvasBackground = () => {
       }
     }
 
-    const initCircle = (i) => {
+    const initCircle = (i: number) => {
       const x = rand(canvas.width)
       const y = rand(canvas.height)
       const n = createNoise3D()(x * xOff, y * yOff, baseHue * zOff)
@@ -58,7 +68,7 @@ export const ShiftCanvasBackground = () => {
       }
     }
 
-    const updateCircle = (i) => {
+    const updateCircle = (i: number) => {
       let x = circleProps[i]
       let y = circleProps[i + 1]
       const vx = circleProps[i + 2]
@@ -78,7 +88,14 @@ export const ShiftCanvasBackground = () => {
       ;(checkBounds(x, y, radius) || life > ttl) && initCircle(i)
     }
 
-    const drawCircle = (x, y, life, ttl, radius, hue) => {
+    const drawCircle = (
+      x: number,
+      y: number,
+      life: number,
+      ttl: number,
+      radius: number,
+      hue: number
+    ) => {
       ctx.save()
       ctx.fillStyle = `hsla(${hue},60%,30%,${fadeInOut(life, ttl)})`
       ctx.beginPath()
@@ -88,7 +105,7 @@ export const ShiftCanvasBackground = () => {
       ctx.restore()
     }
 
-    const checkBounds = (x, y, radius) => {
+    const checkBounds = (x: number, y: number, radius: number) => {
       return (
         x < -radius ||
         x > canvas.width + radius ||
@@ -118,19 +135,14 @@ export const ShiftCanvasBackground = () => {
       window.requestAnimationFrame(draw)
     }
 
-    // Helper functions
-    const rand = (max) => Math.random() * max
-    const fadeInOut = (t, m) => {
-      let hm = 0.5 * m
-      return Math.abs(((t + hm) % m) - hm) / hm
+    if (canvasRef.current) {
+      canvas = canvasRef.current
+      ctx = canvas.getContext("2d") as CanvasRenderingContext2D
+
+      resize()
+      initCircles()
+      draw()
     }
-
-    canvas = canvasRef.current
-    ctx = canvas.getContext("2d")
-
-    resize()
-    initCircles()
-    draw()
 
     window.addEventListener("resize", resize)
 
