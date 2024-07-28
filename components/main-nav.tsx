@@ -6,10 +6,10 @@ import { UserNav } from "@/components/user-nav"
 
 export const MainNav = () => {
   return (
-    <header className="from-background/10 via-background/50 to-background/80 flex h-16 w-full shrink-0 items-center justify-between border-b bg-gradient-to-b px-4">
-      <h1 className="text-center font-bold">
-        <Link href={"/"} className="flex items-center gap-2 ">
-          <Sparkles className="inline-block size-4 " />
+    <header className="mx-auto flex h-16 w-full max-w-screen-2xl shrink-0 items-center justify-between px-4">
+      <h1 className="text-center">
+        <Link href={"/"} className="flex items-center gap-2 text-2xl">
+          <Sparkles />
           <span>CharacterVerse</span>
         </Link>
       </h1>
