@@ -27,6 +27,7 @@ The title should be:
 - No more than 5-7 words long
 - Informative and reflective of the conversation's content
 - Engaging and interesting to potential readers
+- Do not include quotation marks
 
 Please provide only the generated title, without any additional explanation.`
 
@@ -48,6 +49,7 @@ export const generateInitialAIMessage = async (characterData: Character) => {
   4. Include an inspiring metaphor if appropriate
   5. Be slightly exaggerated or cartoonish, but not absurd or nonsensical
   6. Engaging and interesting to potential readers
+  7. Do not include quotation marks
 
   Please provide only the generated message, without any additional explanation or description.`
 
