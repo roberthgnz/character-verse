@@ -7,12 +7,12 @@ export const CharacterCard = ({ character }: { character: Character }) => {
     <Link
       href={`/chat/new?character=${character.name}`}
       key={character.name}
-      className="bg-background border-primary flex cursor-pointer overflow-hidden rounded-lg border shadow transition-transform hover:scale-105"
+      className="bg-background flex cursor-pointer overflow-hidden rounded-lg border shadow transition-transform hover:scale-105"
     >
       <Image
         src={`/img/character/${character.name}.jpeg`}
         alt={character.name}
-        className="aspect-[9/16] w-full max-w-[50%] object-cover"
+        className="aspect-[9/16] max-h-[174px] w-full max-w-[50%] object-cover"
         width={300}
         height={200}
       />
