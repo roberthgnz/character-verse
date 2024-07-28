@@ -43,7 +43,7 @@ export const ChatHistory = ({
   }
 
   return (
-    <div className="space-y-4 p-4">
+    <div className="bg-accent h-full space-y-4 rounded-lg border p-4 shadow-sm">
       <div className="flex items-center justify-between">
         <span className="text-sm font-medium">Chat History</span>
       </div>
