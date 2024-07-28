@@ -53,7 +53,7 @@ export const ChatHistory = ({
             key={chat.id}
             variant={"ghost"}
             size={"icon"}
-            className="group relative w-full"
+            className="group relative w-full !justify-start"
             title={chat.title}
             asChild
           >
