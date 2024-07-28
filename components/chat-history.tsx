@@ -3,16 +3,10 @@
 import { useState } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { MessageSquareText, MoreHorizontal, PlusCircle } from "lucide-react"
+import { PlusCircle, TrashIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { removeChatRoom } from "@/app/chat/actions"
 
 export const ChatHistory = ({
@@ -58,39 +52,35 @@ export const ChatHistory = ({
           <Button
             key={chat.id}
             variant={"ghost"}
-            className="relative w-full flex-1 select-none overflow-hidden text-ellipsis break-all"
+            size={"icon"}
+            className="group relative w-full"
             title={chat.title}
             asChild
           >
             <Link
               href={`/chat/${chat.id}`}
-              className={cn("flex items-center justify-between", {
+              className={cn("flex items-center gap-1", {
                 "bg-accent text-accent-foreground": isLinkActive(
                   `/chat/${chat.id}`
                 ),
               })}
             >
-              <MessageSquareText className="mr-2 size-3" />
-              <span className="whitespace-nowrap">{chat.title}</span>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon">
-                    <MoreHorizontal className="size-4" />
-                    <span className="sr-only">More</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem
-                    onClick={async (e) => {
-                      // Preven bubbling up to the parent DropdownMenuTrigger
-                      e.stopPropagation()
-                      onDeleteChat(chat.id)
-                    }}
-                  >
-                    Delete chat
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <span className="overflow-hidden text-ellipsis break-all">
+                <span className="whitespace-nowrap text-xs">{chat.title}</span>
+              </span>
+              <Button
+                className="opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                variant={"ghost"}
+                size={"icon"}
+                onClick={(e) => {
+                  // Preven bubbling up to the parent DropdownMenuTrigger
+                  e.stopPropagation()
+                  e.preventDefault()
+                  onDeleteChat(chat.id)
+                }}
+              >
+                <TrashIcon className="size-3" />
+              </Button>
             </Link>
           </Button>
         ))}
