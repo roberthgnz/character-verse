@@ -14,12 +14,11 @@ export default function Home() {
       <div className="mx-auto space-y-8 px-4">
         <div className="space-y-2 py-12">
           <h1 className="font-heading flex-1 shrink-0 text-6xl font-bold tracking-tight text-white lg:text-7xl xl:text-8xl">
-            Run <span className="">AI</span> <br />
-            with an <span className="">API</span>.
+            Engage with AI-Powered Characters
           </h1>{" "}
           <p className="max-w-2xl text-2xl text-white">
-            Run and fine-tune open-source models. Deploy custom models at scale.
-            All with one line of code.
+            Immerse yourself in captivating conversations with a diverse array
+            of AI characters.
           </p>
         </div>
         <div className="space-y-6 rounded-lg bg-white p-6">
