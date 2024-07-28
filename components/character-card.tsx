@@ -14,7 +14,7 @@ export const CharacterCard = ({ character }: { character: Character }) => {
       <Image
         src={`/img/character/${character.name}.jpeg`}
         alt={character.name}
-        className="aspect-[9/16] max-h-[200px] w-full max-w-[50%] object-cover"
+        className="aspect-[9/16] max-h-[250px] w-full max-w-[50%] object-cover"
         width={300}
         height={200}
       />
