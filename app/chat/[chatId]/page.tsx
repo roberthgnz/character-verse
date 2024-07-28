@@ -33,8 +33,8 @@ export default async function Chat({ params }: { params: { chatId: string } }) {
 
   return (
     <div className="bg-background flex h-[calc(100vh_-_8rem)] flex-col">
-      <div className="grid size-full grid-cols-[15%_auto_20%] gap-4 overflow-hidden">
-        <div className="h-full border-r">
+      <div className="mx-auto grid h-full max-w-screen-2xl grid-cols-[15%_auto_20%] gap-4 overflow-hidden">
+        <div className="bg-accent h-full rounded-lg border shadow-sm">
           <ChatHistory character={character} chats={chats} />
         </div>
         <ChatPanel
@@ -42,7 +42,7 @@ export default async function Chat({ params }: { params: { chatId: string } }) {
           character={character}
           initialMessages={chat.messages as any[]}
         />
-        <div className="h-full border-l">
+        <div className="bg-accent h-full rounded-lg border shadow-sm">
           <ChatSettings character={character} />
         </div>
       </div>
