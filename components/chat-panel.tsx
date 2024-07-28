@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ButtonScrollToBottom } from "@/components/button-scroll-to-bottom"
 import { generateTitle } from "@/app/ai/actions"
-import { saveChatMessage } from "@/app/chat/actions"
+import { saveChatMessage, updateChatRoom } from "@/app/chat/actions"
 
 import { ChatMessage } from "./chat-message"
 import { SpeechToTextButton } from "./speech-to-text-button"
@@ -59,7 +59,7 @@ export const ChatPanel = ({
       // Generate title for the chat
       if (messages.length - 1 === 4) {
         generateTitle(messages as any[]).then((title) => {
-          console.log(title)
+          title && updateChatRoom(chatId, title)
         })
       }
     },
