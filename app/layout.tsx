@@ -30,7 +30,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <MainNav />
         {children}
         <MainFooter />
-        <Toaster />
+        <Toaster duration={2500} richColors />
         <Analytics />
       </body>
     </html>
