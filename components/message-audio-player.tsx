@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { LoaderIcon, PlayIcon } from "lucide-react"
+import { LoaderIcon, Volume2 } from "lucide-react"
 
 import { useAudioPlayer } from "@/hooks/use-audio-player"
 
@@ -58,7 +58,9 @@ export const MessageAudioPlayer = ({
   return (
     <>
       <Button
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation()
+          e.preventDefault()
           player.isPlaying ? player.stop() : textToSpeech(content)
         }}
         size={"icon"}
@@ -172,7 +174,7 @@ export const MessageAudioPlayer = ({
               </rect>
             </svg>
           ) : (
-            <PlayIcon size={16} />
+            <Volume2 size={16} />
           )
         ) : (
           <LoaderIcon size={16} className="animate-spin" />
