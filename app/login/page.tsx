@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation"
-import { auth } from "@/auth"
+import { auth, getUser } from "@/auth"
 
 import { SignInForm } from "@/components/login-form"
 
@@ -9,8 +9,9 @@ export const metadata = {
 
 export default async function LoginPage() {
   const session = await auth()
+  const user = await getUser(session!.user!.email as string)
 
-  if (session) {
+  if (user) {
     return redirect("/")
   }
 
