@@ -15,7 +15,7 @@ export const getUser = (email: string) => {
   try {
     return prisma.user.findUnique({ where: { email } })
   } catch (error) {
-    console.error("Failed to fetch user:", error)
-    throw new Error("Failed to fetch user.")
+    console.error(error)
+    return null
   }
 }
