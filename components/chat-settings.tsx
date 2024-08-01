@@ -83,6 +83,7 @@ export const ChatSettings = ({ character }: ChatSettingsProps) => {
           </Avatar>
           <span>{character.name}</span>
           <Button
+            type="button"
             size={"sm"}
             variant={"outline"}
             onClick={() => shareCharacter()}
