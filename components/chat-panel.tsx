@@ -84,16 +84,16 @@ export const ChatPanel = ({
     setIsLoading(true)
     scrollToBottom()
 
-    // Save the message from the user
-    await saveChatMessage({ ...message, id: nanoid(7), chatId })
-
     await append(message as Message, {
       data: JSON.stringify({ characterContext: characterState }),
     })
+    await saveChatMessage({ ...message, id: nanoid(7), chatId })
 
     setInput("")
     setIsLoading(false)
     scrollToBottom()
+
+    inputRef.current?.focus()
   }
 
   const initChat = async () => {
