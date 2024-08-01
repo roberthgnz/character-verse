@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 import { auth } from "@/auth"
 import { characters } from "@/constants"
@@ -7,6 +8,20 @@ import { ChatHistory } from "@/components/chat-history"
 import { ChatPanel } from "@/components/chat-panel"
 import { ChatSettings } from "@/components/chat-settings"
 import { getChatRoom, getChatRooms } from "@/app/chat/actions"
+
+interface PageProps {
+  params: { chatId: string }
+}
+
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const chat = await getChatRoom(params.chatId)
+
+  return {
+    title: chat?.title || "Chat",
+  }
+}
 
 export default async function Chat({ params }: { params: { chatId: string } }) {
   const session = await auth()
