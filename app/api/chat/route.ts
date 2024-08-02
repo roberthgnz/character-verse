@@ -59,6 +59,7 @@ export async function POST(req: Request) {
     4. Include an inspiring metaphor if appropriate
     5. Be slightly exaggerated or cartoonish, but not absurd or nonsensical
     6. Do not include your name in the response
+    7. Answer in the language of the question
 
     Please provide only the dialogue, without any additional explanation or description.
     `,
