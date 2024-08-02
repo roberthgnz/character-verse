@@ -20,7 +20,7 @@ export const ChatHistory = async ({
       <div className="flex items-center justify-between">
         <span className="text-sm font-medium">Chat History</span>
       </div>
-      <Button variant={"outline"} className="w-full" asChild>
+      <Button className="w-full" asChild>
         <Link href={`/chat/new?character=${character.name}`}>
           <PlusCircle className="mr-2 size-3" />
           New Chat
