@@ -1,7 +1,7 @@
 import { revalidatePath } from "next/cache"
 import Link from "next/link"
 import { redirect } from "next/navigation"
-import { auth, signOut } from "@/auth"
+import { getUser, signOut } from "@/auth"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 export const UserNav = async () => {
-  const session = await auth()
+  const user = await getUser()
 
   const logout = async () => {
     "use server"
@@ -30,7 +30,7 @@ export const UserNav = async () => {
         <Button variant="ghost" className="relative size-8 rounded-full">
           <Avatar className="size-8">
             <AvatarImage
-              src={session?.user?.image || "https://avatar.vercel.sh/1"}
+              src={user?.image || "https://avatar.vercel.sh/1"}
               alt="avatar"
             />
             <AvatarFallback />
@@ -38,22 +38,20 @@ export const UserNav = async () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
-        {session?.user && (
+        {user && (
           <>
             <DropdownMenuLabel className="font-normal">
               <div className="flex flex-col space-y-1">
-                <p className="text-sm font-medium leading-none">
-                  {session?.user.name}
-                </p>
+                <p className="text-sm font-medium leading-none">{user.name}</p>
                 <p className="text-muted-foreground text-xs leading-none">
-                  {session?.user.email}
+                  {user.email}
                 </p>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
           </>
         )}
-        {session?.user ? (
+        {user ? (
           <form action={logout}>
             <DropdownMenuItem asChild>
               <Button

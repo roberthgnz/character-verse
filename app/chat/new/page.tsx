@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import { redirect } from "next/navigation"
-import { auth, getUser } from "@/auth"
+import { getUser } from "@/auth"
 import { characters } from "@/constants"
 import { InitialCharacterMessageProvider } from "@/context/message-context"
 import type { Character } from "@/types"
@@ -37,18 +37,10 @@ export default async function Page({ searchParams }: PageProps) {
     )
   }
 
-  const session = await auth()
-
-  const redirectUrl = `/login?character=${character.name}`
-
-  if (!session) {
-    return redirect(redirectUrl)
-  }
-
-  const user = await getUser(session!.user!.email as string)
+  const user = await getUser()
 
   if (!user) {
-    return redirect(redirectUrl)
+    return redirect(`/login?character=${character.name}`)
   }
 
   return (

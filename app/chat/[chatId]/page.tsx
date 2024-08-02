@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import { redirect } from "next/navigation"
-import { auth } from "@/auth"
+import { getUser } from "@/auth"
 import { characters } from "@/constants"
 import type { Character } from "@/types"
 
@@ -24,9 +24,9 @@ export async function generateMetadata({
 }
 
 export default async function Chat({ params }: { params: { chatId: string } }) {
-  const session = await auth()
+  const user = await getUser()
 
-  if (!session) {
+  if (!user) {
     return redirect("/login")
   }
 
@@ -36,7 +36,7 @@ export default async function Chat({ params }: { params: { chatId: string } }) {
     return redirect("/")
   }
 
-  if (chat.user.email !== session!.user!.email) {
+  if (chat.user.email !== user!.email) {
     return redirect("/")
   }
 
