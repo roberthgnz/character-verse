@@ -87,7 +87,7 @@ export const ChatPanel = ({
     await append(message as Message, {
       data: JSON.stringify({ characterContext: characterState }),
     })
-    await saveChatMessage({ ...message, id: nanoid(7), chatId })
+    saveChatMessage({ ...message, id: nanoid(7), chatId })
 
     setInput("")
     setIsLoading(false)
