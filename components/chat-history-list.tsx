@@ -10,30 +10,31 @@ import { removeChatRoom } from "@/app/chat/actions"
 
 export const ChatHistoryList = ({
   chats,
-  character,
+  direction = "vertical",
 }: {
   chats: any[]
-  character: any
+  direction?: "vertical" | "horizontal"
 }) => {
-  const router = useRouter()
   const pathname = usePathname()
+  const router = useRouter()
 
   const isLinkActive = (href: string) => {
     return pathname === href
   }
 
   const onDeleteChat = async (chatId: string) => {
-    const confirm = window.confirm("Are you sure you want to delete this chat?")
-    if (confirm) {
-      await removeChatRoom(chatId)
-      if (pathname === `/chat/${chatId}`) {
-        router.push(`/chat/new?character=${character.name}`)
-      }
-    }
+    if (!confirm("Are you sure you want to delete this chat?")) return
+    await removeChatRoom(chatId)
+    return router.refresh()
   }
 
   return (
-    <div className="flex-1 space-y-1 overflow-y-auto">
+    <div
+      className={cn("w-full gap-1", {
+        "flex flex-col": direction === "vertical",
+        "grid grid-cols-3": direction === "horizontal",
+      })}
+    >
       {chats.map((chat) => (
         <Button
           key={chat.id}
@@ -45,6 +46,7 @@ export const ChatHistoryList = ({
           <Link
             href={`/chat/${chat.id}`}
             className={cn({
+              "border border-accent-background": direction === "horizontal",
               "bg-background hover:bg-background": isLinkActive(
                 `/chat/${chat.id}`
               ),
