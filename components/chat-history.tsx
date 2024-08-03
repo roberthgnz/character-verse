@@ -1,4 +1,5 @@
 import Link from "next/link"
+import type { Character } from "@/types"
 import { PlusCircle } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -11,22 +12,20 @@ export const ChatHistory = async ({
   character,
 }: {
   userId: string
-  character: any
+  character: Character
 }) => {
   const chats = await getChatRooms(userId, character.name)
 
   return (
     <div className="bg-accent h-full space-y-4 rounded-lg border p-4 shadow-sm">
-      <div className="flex items-center justify-between">
-        <span className="text-sm font-medium">Chat History</span>
-      </div>
+      <h3 className="text-sm font-medium">Chat History</h3>
       <Button className="w-full" asChild>
         <Link href={`/chat/new?character=${character.name}`}>
           <PlusCircle className="mr-2 size-3" />
           New Chat
         </Link>
       </Button>
-      <ChatHistoryList chats={chats} character={character} />
+      <ChatHistoryList chats={chats} />
     </div>
   )
 }

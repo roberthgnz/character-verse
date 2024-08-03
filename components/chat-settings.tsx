@@ -4,11 +4,9 @@ import { useEffect, useState } from "react"
 import { setState as setCharacterState } from "@/stores/use-character-store"
 import type { Character } from "@/types"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { ShareIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -51,14 +49,6 @@ export const ChatSettings = ({ character }: ChatSettingsProps) => {
     setHasChanged(isDirty && isValid)
   }, [form])
 
-  const shareCharacter = () => {
-    navigator.share({
-      title: character.name,
-      text: "Check out this character",
-      url: window.location.href,
-    })
-  }
-
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     setCharacterState(() => values)
     toast({
@@ -73,24 +63,7 @@ export const ChatSettings = ({ character }: ChatSettingsProps) => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="bg-accent h-full space-y-4 rounded-lg border p-4 shadow-sm"
       >
-        <div className="flex items-center justify-between gap-4">
-          <Avatar>
-            <AvatarImage
-              src={`/img/character/${character.name}.jpeg`}
-              alt={character.name}
-            />
-            <AvatarFallback>{character.name.at(0)}</AvatarFallback>
-          </Avatar>
-          <span>{character.name}</span>
-          <Button
-            type="button"
-            size={"sm"}
-            variant={"outline"}
-            onClick={() => shareCharacter()}
-          >
-            <ShareIcon size={16} />
-          </Button>
-        </div>
+        <h3 className="text-sm font-medium">Chat Settings</h3>
         <Separator />
         <div className="space-y-2">
           <FormField

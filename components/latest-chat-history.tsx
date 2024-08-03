@@ -1,3 +1,5 @@
+import type { Character } from "@/types"
+
 import { getChatRooms } from "@/app/chat/actions"
 
 import { ChatHistoryList } from "./chat-history-list"
@@ -7,7 +9,7 @@ export const LatestChatHistory = async ({
   character,
 }: {
   userId: string
-  character: any
+  character: Character
 }) => {
   const chats = await getChatRooms(userId, character.name, 6)
 
