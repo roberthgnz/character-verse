@@ -61,7 +61,11 @@ export const getChatRoom = async (chatId: string) => {
   return chat
 }
 
-export const getChatRooms = async (userId: string, character: string) => {
+export const getChatRooms = async (
+  userId: string,
+  character: string,
+  take?: number
+) => {
   const chats = await prisma.chat.findMany({
     where: {
       userId,
@@ -70,6 +74,7 @@ export const getChatRooms = async (userId: string, character: string) => {
     orderBy: {
       createdAt: "desc",
     },
+    take,
   })
 
   return chats
