@@ -1,4 +1,3 @@
-import { Suspense } from "react"
 import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 import { getUser } from "@/auth"
@@ -9,7 +8,7 @@ import type { Character } from "@/types"
 import { ChatForm } from "@/components/chat-form"
 import { InitialCharacterMessage } from "@/components/initial-character-message"
 import { LatestChatHistory } from "@/components/latest-chat-history"
-import { LatestChatHistorySkeleton } from "@/components/latest-chat-history-skeleton"
+import { getChatRooms } from "@/app/chat/actions"
 
 interface PageProps {
   searchParams: { character: string }
@@ -46,8 +45,10 @@ export default async function Page({ searchParams }: PageProps) {
     return redirect(`/login?character=${character.name}`)
   }
 
+  const chats = await getChatRooms(user.id, character.name, 6)
+
   return (
-    <div className="bg-background flex h-[calc(100vh_-_8rem)] flex-col items-center">
+    <div className="bg-background flex min-h-[calc(100vh_-_8rem)] flex-col items-center">
       <div className="w-full max-w-screen-md">
         <div className="flex flex-col items-center gap-8">
           <video className="size-64 rounded-full" muted loop autoPlay>
@@ -63,11 +64,9 @@ export default async function Page({ searchParams }: PageProps) {
             <InitialCharacterMessage character={character} />
             <ChatForm userId={user.id} character={character} />
           </InitialCharacterMessageProvider>
-          <Suspense
-            fallback={<LatestChatHistorySkeleton character={character} />}
-          >
-            <LatestChatHistory userId={user.id} character={character} />
-          </Suspense>
+          {chats.length > 0 && (
+            <LatestChatHistory chats={chats} character={character} />
+          )}
         </div>
       </div>
     </div>
