@@ -6,14 +6,14 @@ import { useInitialCharacterMessage } from "@/context/message-context"
 import type { Character } from "@/types"
 import { ForwardIcon, LoaderIcon } from "lucide-react"
 import mergeRefs from "merge-refs"
-import { nanoid } from "nanoid"
 import { useHotkeys } from "react-hotkeys-hook"
 import { useResizeObserver } from "usehooks-ts"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
-import { createChatRoom } from "@/app/chat/actions"
+import { generateTitle } from "@/app/ai/actions"
+import { createChatRoom, updateChatRoom } from "@/app/chat/actions"
 
 interface ChatFormProps {
   userId: string
@@ -44,27 +44,30 @@ export const ChatForm = ({ userId, character }: ChatFormProps) => {
     if (isValid) {
       setIsLoading(true)
 
+      const initialMessages = [
+        {
+          role: "assistant",
+          content: initialCharacterMessage,
+        },
+        {
+          role: "user",
+          content: message,
+        },
+      ]
+
       const { data } = await createChatRoom({
         userId,
         title: "Chat with " + character.name,
         character: character.name,
-        initialMessages: [
-          {
-            id: nanoid(7),
-            role: "assistant",
-            content: initialCharacterMessage,
-          },
-          {
-            id: nanoid(7),
-            role: "user",
-            content: message,
-          },
-        ],
+        initialMessages,
       })
 
-      setIsLoading(false)
-
-      data && router.push(`/chat/${data.id}`)
+      if (data) {
+        const title = await generateTitle(initialMessages as any[])
+        title && (await updateChatRoom(data?.id, title))
+        setIsLoading(false)
+        router.push(`/chat/${data.id}`)
+      }
     }
   }
 
