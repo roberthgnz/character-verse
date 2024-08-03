@@ -21,7 +21,11 @@ const getAIText = async (prompt: string) => {
 export const generateTitle = async (messages: string[]) => {
   const prompt = `Given the following list of messages from a chat conversation, generate a short, engaging title that captures the main topic or theme:
 
-${messages.join("\n")}
+${messages
+  .map((message: any) => {
+    return `${message.role}: ${message.content}`
+  })
+  .join("\n")}
 
 The title should be:
 - No more than 5-7 words long
