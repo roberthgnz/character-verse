@@ -1,6 +1,6 @@
 # CharacterVerse
 
-CharacterVerse is a web application that allows users to interact with the AI generated characters get to know them better. The application is built using Next.js, Tailwind CSS, and TypeScript.
+CharacterVerse is a platform where users can interact with AI generated characters. Users can customize the characters and interact with them using voice. Introduce yourself to the characters and have funny conversations with them.
 
 ## Features
 
