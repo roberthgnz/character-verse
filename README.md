@@ -1,33 +1,75 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# CharacterVerse
+
+CharacterVerse is a web application that allows users to interact with the AI generated characters get to know them better. The application is built using Next.js, Tailwind CSS, and TypeScript.
+
+## Features
+
+- **Authentication**: Users can sign in using their GitHub account.
+- **AI Generated Characters**: Users can interact with the AI generated characters.
+- **Character Customization**: Users can customize the characters.
+- **Voice Interaction**: Users can interact with the characters using voice.
+
+## Tech Stack
+
+- **Next.js**: React framework for production.
+- **Tailwind CSS**: Utility-first CSS framework.
+- **TypeScript**: Typed JavaScript.
+- **Prisma**: Database toolkit for TypeScript and Node.js.
+- **Vercel AI SDK**: AI SDK for Vercel.
+- **OpenAI API**: API for AI generated characters.
+- **Cartesia API**: API for voice generation.
+- **Vercel KV**: For rate limiting.
+
+## Deploy on Vercel
+
+You can deploy a version of CharacterVerse with Vercel using the button below:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/roberthgnz/character-verse&env=DATABASE_URL,AUTH_SECRET,AUTH_GITHUB_ID,AUTH_GITHUB_SECRET,OPENAI_API_KEY,CARTESIA_API_KEY,KV_REST_API_URL,KV_REST_API_TOKEN)
+
+## Running Locally
+
+First of all, you need to create a `.env.local` file in the root of the project and add the environment variables mentioned above.
+
+```bash
+DATABASE_URL=
+
+AUTH_SECRET=
+AUTH_GITHUB_ID=
+AUTH_GITHUB_SECRET=
+
+OPENAI_API_KEY=
+
+CARTESIA_API_KEY=
+
+KV_REST_API_URL=
+KV_REST_API_TOKEN=
+```
+
+Get the `DATABASE_URL` from [Neon Serverless Postgres](https://neon.tech/) or your local database.
+
+Get the `AUTH_SECRET`, `AUTH_GITHUB_ID`, and `AUTH_GITHUB_SECRET` from [GitHub OAuth Apps](https://github.com/settings/apps)
+
+Get the `OPENAI_API_KEY` from [OpenAI](https://platform.openai.com/api-keys)
+
+Get the `CARTESIA_API_KEY` from [Cartesia](https://play.cartesia.ai/console)
+
+Get the `KV_REST_API_URL` and `KV_REST_API_TOKEN` from [Vercel](https://vercel.com/)
 
 ## Getting Started
 
-First, run the development server:
+First, install the dependencies:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
+```
+
+Then, run the development server:
+
+```bash
 pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
 ## Deploy on Vercel
 
