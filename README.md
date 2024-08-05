@@ -24,7 +24,7 @@ CharacterVerse is a platform where users can interact with AI generated characte
 
 You can deploy a version of CharacterVerse with Vercel using the button below:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/roberthgnz/character-verse&env=DATABASE_URL,AUTH_SECRET,AUTH_GITHUB_ID,AUTH_GITHUB_SECRET,OPENAI_API_KEY,CARTESIA_API_KEY,KV_REST_API_URL,KV_REST_API_TOKEN)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/roberthgnz/character-verse&env=DATABASE_URL,AUTH_SECRET,AUTH_GITHUB_ID,AUTH_GITHUB_SECRET,OPENAI_API_KEY,CARTESIA_API_KEY,KV_REST_API_URL,KV_REST_API_TOKEN&repo-name=character-verse)
 
 ## Running Locally
 
